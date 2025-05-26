@@ -1,6 +1,6 @@
 # Workflow Git pour la Création d'une Branche et l'Intégration des Modifications
 
-Vocabulaire : <br>
+**Vocabulaire** : <br>
 > `origin` c’est l’url du dépôt par défaut dans git <br>
 > `main` c'est la branch de base par défaut sur git
 
