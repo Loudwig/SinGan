@@ -1,0 +1,11 @@
+date: 2025-05-26T21:23:14
+N: 8
+lambda_gp: 10
+lr: 0.0005
+betas: (0.5, 0.999)
+n_Discriminator: 5
+n_Generator: 2
+iter_per_scale: 2000
+alpha_rec: 0
+beta_sigma: 0.1
+comment: Sin Gan classique sans rec loss et sans padding
