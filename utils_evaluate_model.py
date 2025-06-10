@@ -159,3 +159,26 @@ def build_generator_from_state(sd, device="cpu"):
     for p in G.parameters():
         p.requires_grad_(False)
     return G
+
+
+def sliced_wasserstein_distance_features(real_features, fake_features, num_projections=128):
+    # real_features shape: (B, C_feat, H_feat, W_feat)
+    # Reshape to (B * H_feat * W_feat, C_feat) where C_feat is the dimension of the feature vector
+    real_flattened = real_features.permute(0, 2, 3, 1).reshape(-1, real_features.shape[1])
+    fake_flattened = fake_features.permute(0, 2, 3, 1).reshape(-1, fake_features.shape[1])
+
+    # Now real_flattened and fake_flattened have shape (num_samples, feature_dim)
+    # where num_samples = B * H_feat * W_feat and feature_dim = C_feat
+
+    feature_dim = real_flattened.shape[1] # This is C_feat
+
+    projections = torch.randn(feature_dim, num_projections).to(real_features.device)
+    projections /= torch.sqrt(torch.sum(projections**2, dim=0, keepdim=True))
+
+    real_projections = torch.matmul(real_flattened, projections)
+    fake_projections = torch.matmul(fake_flattened, projections)
+
+    sorted_real_projections, _ = torch.sort(real_projections, dim=0)
+    sorted_fake_projections, _ = torch.sort(fake_projections, dim=0)
+
+    return torch.mean(torch.abs(sorted_real_projections - sorted_fake_projections))
