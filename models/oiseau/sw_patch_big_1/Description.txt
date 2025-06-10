@@ -1,0 +1,13 @@
+date: 2025-06-10T16:52:21
+N: 8
+r: 1.3333333333333333
+lr: 0.0005
+betas: (0.5, 0.999)
+patch_size: [10.2]
+n_Generator: 2
+base_iter: 4000
+alpha_rec: 10
+beta_sigma: 0.1
+lambda_sw: 10
+stride: [5, 10]
+comment: Sin Gan avec de la data aug sur l'image réele. + swd trainning on multiple patch_size
