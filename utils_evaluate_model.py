@@ -7,6 +7,11 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from PIL import Image
+
+import ot
+from time import time
+from torchvision import transforms
+
 from models import *
 
 # convert [-1,1] image to PIL image (to_pil_image requires [0,1] image.
