@@ -168,3 +168,80 @@ def preprocess_features(features):
     # 2) flatten batch+spatial en une seule dimension
     return x.reshape(B * H * W, C)      # [B*H*W, C]
 
+def load_inception():
+  model = torch.hub.load('pytorch/vision:v0.10.0', 'inception_v3', pretrained=True)
+  model.eval()
+  model.avgpool = nn.Identity()
+  model.dropout = nn.Identity()
+  model.fc = nn.Identity()
+  return model
+
+def preprocess_image(file_path):
+  preprocess = transforms.Compose([
+    transforms.Resize(299),
+    transforms.CenterCrop(299),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+  ])
+
+  input_image1 = Image.open(file_path).convert('RGB')
+  input_tensor1 = preprocess(input_image1)
+  input_batch1 = input_tensor1.unsqueeze(0)
+
+  return input_batch1
+
+def sliced_wasserstein_image(model, file_path1, file_path2, n_projections=100, verbose=False):
+  n_points = 64
+
+  input_batch1 = preprocess_image(file_path1)
+  input_batch2 = preprocess_image(file_path2)
+
+  nuage_A = model(input_batch1)[0].view(2048, n_points).T.detach().numpy()
+  nuage_B = model(input_batch2)[0].view(2048, n_points).T.detach().numpy()
+
+  a = np.ones((n_points,)) / n_points
+  b = np.ones((n_points,)) / n_points
+
+  t1 = time()
+  res = ot.sliced_wasserstein_distance(nuage_A,nuage_B,a, b, n_projections)
+  t2=time()
+
+  if verbose:
+    print(f"Executed in {t2-t1:.4f}s")
+
+  return res
+
+def wasserstein_image(model, file_path1, file_path2, verbose=False):
+  n_points = 64
+
+  input_batch1 = preprocess_image(file_path1)
+  input_batch2 = preprocess_image(file_path2)
+
+  nuage_A = model(input_batch1)[0].view(2048, n_points).T.detach().numpy()
+  nuage_B = model(input_batch2)[0].view(2048, n_points).T.detach().numpy()
+
+  a = np.ones((n_points,)) / n_points
+  b = np.ones((n_points,)) / n_points
+
+  t1 = time()
+  M = ot.dist(nuage_A, nuage_B, metric='euclidean')
+  res = ot.emd2(a, b, M)
+  t2=time()
+
+  if verbose:
+    print(f"Executed in {t2-t1:.4f}s")
+
+  return res
+
+def preprocess_image_for_lpips(file_path, image_size=256):
+    preprocess = transforms.Compose([
+        transforms.Resize(image_size),
+        transforms.CenterCrop(image_size),
+        transforms.ToTensor(),                   
+        transforms.Normalize((0.5, 0.5, 0.5),    
+                             (0.5, 0.5, 0.5)),
+    ])
+
+    image = Image.open(file_path).convert('RGB')
+    tensor = preprocess(image).unsqueeze(0)
+    return tensor
