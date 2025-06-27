@@ -6,12 +6,6 @@ from torchvision.transforms.functional import resize, to_tensor, to_pil_image
 def extract_patches_batched(imgs, patch_size, stride):
     """
     Extracts sliding patches from a batch of images.
-
-    Args:
-        imgs (torch.Tensor): Input images, shape (B, C, H, W).
-        patch_size (int or tuple): The size of the sliding patches (e.g., 32 for 32x32 patches).
-        stride (int or tuple): The stride of the sliding patches.
-
     Returns:
         torch.Tensor: Flattened patches, shape (B * num_patches_per_image, C * patch_size * patch_size).
                       Each row is a flattened patch.
@@ -41,10 +35,6 @@ def sliced_wasserstein_distance(real_patches_flat, fake_patches_flat, num_projec
     """
     Computes the Sliced Wasserstein Distance between two batches of *flattened* patches.
 
-    Args:
-        real_patches_flat (torch.Tensor): Tensor of real patches, shape (num_real_patches, patch_dim)
-        fake_patches_flat (torch.Tensor): Tensor of fake patches, shape (num_fake_patches, patch_dim)
-        num_projections (int): Number of random 1D projections.
     """
     # Verify that the patch dimensions match
     if real_patches_flat.shape[1] != fake_patches_flat.shape[1]:

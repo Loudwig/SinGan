@@ -14,8 +14,8 @@ def pil_from_minus1to1(t):
     """
     Convertit un tenseur [-1,1] (CHW ou 1,C,H,W) en PIL Image.
     """
-    t = t.squeeze(0) if t.dim() == 4 else t          # B×C×H×W → C×H×W
-    t = ((t.clamp(-1, 1) + 1) / 2)                   # [-1,1] → [0,1]
+    t = t.squeeze(0) if t.dim() == 4 else t          # B×C×H×W -> C×H×W
+    t = ((t.clamp(-1, 1) + 1) / 2)                   # [-1,1]  ->  [0,1]
     return to_pil_image(t.cpu())
 
 
