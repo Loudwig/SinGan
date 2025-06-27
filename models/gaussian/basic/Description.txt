@@ -1,0 +1,12 @@
+date: 2025-06-21T00:32:37
+N_scales: 9
+lambda_gp: 10
+r: 1.3333333333333333
+lr: 0.0005
+betas: (0.5, 0.999)
+n_Discriminator: 5
+n_Generator: 2
+iter_per_scale: 2000
+alpha_rec: 10
+beta_sigma: 0.1
+comment: Sin Gan avec poids classique comme dans le papier sauf le padding

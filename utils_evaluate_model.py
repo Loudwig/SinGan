@@ -1,17 +1,12 @@
 from torchvision.transforms.functional import resize, to_tensor, to_pil_image
 import numpy as np
 import matplotlib.pyplot as plt
-import time
-import torchsummary
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torchvision.transforms.functional import resize, to_tensor, to_pil_image
 from PIL import Image
-from tqdm import tqdm
-import os, datetime ,json
 from models import *
 
 # convert [-1,1] image to PIL image (to_pil_image requires [0,1] image.
@@ -19,8 +14,8 @@ def pil_from_minus1to1(t):
     """
     Convertit un tenseur [-1,1] (CHW ou 1,C,H,W) en PIL Image.
     """
-    t = t.squeeze(0) if t.dim() == 4 else t          # B×C×H×W → C×H×W
-    t = ((t.clamp(-1, 1) + 1) / 2)                   # [-1,1] → [0,1]
+    t = t.squeeze(0) if t.dim() == 4 else t          # B×C×H×W -> C×H×W
+    t = ((t.clamp(-1, 1) + 1) / 2)                   # [-1,1]  ->  [0,1]
     return to_pil_image(t.cpu())
 
 
@@ -159,3 +154,17 @@ def build_generator_from_state(sd, device="cpu"):
     for p in G.parameters():
         p.requires_grad_(False)
     return G
+
+
+def preprocess_features(features):
+    """
+    Prend features de forme (B, C, H, W)
+    et renvoie un tenseur (B * H * W, C),
+    i.e. un nuage de B*H*W vecteurs C-dimensionnels.
+    """
+    B, C, H, W = features.shape
+    # 1) permute pour déplacer C en dernière dimension
+    x = features.permute(0, 2, 3, 1)    # [B, H, W, C]
+    # 2) flatten batch+spatial en une seule dimension
+    return x.reshape(B * H * W, C)      # [B*H*W, C]
+

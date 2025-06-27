@@ -1,7 +1,7 @@
-date: 2025-05-30T16:14:07
-N: 8
+date: 2025-06-27T14:51:12
+N_scales: 8
 lambda_gp: 10
-r: 1.333
+r: 1.3333333333333333
 lr: 0.0005
 betas: (0.5, 0.999)
 n_Discriminator: 5
