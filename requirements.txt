@@ -63,6 +63,7 @@ lazr.restfulclient==0.14.6
 lazr.uri==1.0.6
 libvirt-python==10.0.0
 lockfile==0.12.2
+lpips==0.1.4
 lxml==5.2.1
 lz4==4.0.2+dfsg
 Markdown==3.5.2
@@ -80,6 +81,7 @@ ntpsec==1.2.2
 numpy==1.26.4
 oauthlib==3.2.2
 olefile==0.46
+opentsne==1.0.2
 packaging==24.0
 PAM==0.4.2
 passlib==1.7.4
@@ -88,6 +90,7 @@ pexpect==4.9.0
 pillow==10.2.0
 platformdirs==4.2.0
 polib==1.1.1
+POT==0.4.0
 prometheus-client==0.19.0
 ptyprocess==0.7.0
 pyasn1==0.4.8
