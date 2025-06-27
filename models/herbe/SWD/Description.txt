@@ -10,4 +10,4 @@ lamda_swd_total: 1.0
 lambda_hf_base: 0.05
 lambda_hf_last: 0.2
 r: 1.8
-comment: Entraînement rapide SWD multi-échelle + HF + MSE, sans discriminateur.
+comment: Entraînement rapide SWD multi-échelle  + MSE, sans discriminateur.
